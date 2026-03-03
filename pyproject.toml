@@ -88,7 +88,7 @@ cmd = "pytest backend/tests/e2e"
 
 [tool.pyright]
 include = ["backend"]
-exclude = ["**/__pycache__"]
+exclude = ["**/__pycache__", "**/node_modules", "**/.*", ".venv", ".direnv"]
 typeCheckingMode = "strict"
 reportAssignmentType = "none"
 reportIncompatibleVariableOverride = "none"
