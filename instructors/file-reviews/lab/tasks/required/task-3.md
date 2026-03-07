@@ -81,7 +81,7 @@ No issues found.
 
 ### Task document template (tasks.md Section 1)
 
-1. ~~**Lines 11–18:** Missing `<h4>Diagram</h4>` section between Context and Table of contents. The task involves actions across three environments (local development, VM deployment, GitHub PR), which requires a Mermaid sequence diagram per convention (tasks.md 1.1, line 129: "Diagram is required whenever the task involves actions across multiple actors or environments").~~
+No issues found.
 
 ### 4.1. Instructions wording
 
@@ -101,7 +101,7 @@ No issues found.
 
 ### 4.5. Ordered lists
 
-1. ~~**Lines 120–122:** Sequential implementation steps ("Add a state variable…", "Add buttons…", "Render the Items table…") use a bullet list (`-`) instead of a numbered list (`1. 2. 3.`). These are sequential actions that build on each other and should be numbered per convention 4.5.~~
+No issues found.
 
 ### 4.6. Mini-ToC
 
@@ -113,13 +113,11 @@ No issues found.
 
 ### 4.8. Links and cross-references
 
-1. ~~**Line 38:** Links to `../../../wiki/git-workflow.md` without a section anchor. Convention 4.8 says "Don't link to the top-level heading of a file. Link to a specific subsection instead." Linking without an anchor is equivalent to linking to the top-level heading. (Note: the task template in `tasks.md` Section 1 uses this same pattern, so the template itself may need updating.)~~
+No issues found.
 
 ### 4.9. Notes, tips, warnings
 
-1. ~~**Line 151:** Uses `**Tip:**` in plain text inside a numbered list. Per convention 4.9, alerts inside lists must use the fallback blockquote format with emoji and bold label (e.g., `> 🟩 **Tip**`).~~
-
-2. ~~**Line 193:** Uses `**Note:**` in plain text inside a numbered list. Per convention 4.9, alerts inside lists must use the fallback blockquote format with emoji and bold label (e.g., `> 🟦 **Note**`).~~
+No issues found.
 
 ### 4.10. Images
 
@@ -135,7 +133,7 @@ No issues found.
 
 ### 4.13. Diagrams
 
-Covered under "Task document template" above (missing `<h4>Diagram</h4>` section).
+Not applicable.
 
 ### 4.14. `<!-- TODO -->` comments
 
@@ -159,11 +157,11 @@ No issues found.
 
 ### 4.19. Steps with sub-steps
 
-1. ~~**Lines 118–122:** "A simple approach:" followed by bullet items describes sequential implementation steps but lacks the proper transition phrase ("Complete these steps:" for student actions or "does the following:" for artifact behavior) per convention 4.19.~~
+No issues found.
 
 ### 4.20. Placeholders in docs
 
-1. ~~**Line 85:** `<lab-id>` placeholder used in the AI prompt without a linked explanation or inline definition. Per convention 4.20, placeholders should link to an explanation section or include inline clarification.~~
+No issues found.
 
 ### 4.21. `docker compose up` commands
 
@@ -189,10 +187,6 @@ Not applicable.
 
 Not applicable (uses `<your-vm-ip-address>` placeholder, not a hardcoded example).
 
-### Step checkpoints (tasks.md 4.18)
-
-1. ~~**Line 248 (step 1.9, item 6):** "Verify the Dashboard page shows charts" is a checkpoint worded as a numbered step. Checkpoints must be indented under the action step they verify, not numbered as separate steps.~~
-
 ---
 
 ## TODOs
@@ -214,9 +208,9 @@ No empty sections found.
 | Conceptual — High             | 0     |
 | Conceptual — Medium           | 6     |
 | Conceptual — Low              | 4     |
-| Convention violations         | 8     |
+| Convention violations         | 0     |
 | TODOs                         | 0     |
 | Empty sections                | 0     |
-| **Total**                     | **18**|
+| **Total**                     | **10**|
 
-**Overall assessment:** The task follows the template structure correctly and covers a coherent learning objective. The main issues are: (1) a missing `<h4>Diagram</h4>` section for a multi-environment task, (2) two inline notes/tips that use plain bold text instead of the fallback blockquote alert format inside lists, (3) missing checkpoints for steps 1.3, 1.5, and 1.6, plus a checkpoint disguised as a numbered step in step 1.9, (4) step 1.5 (Add navigation) is underspecified for students who don't use AI, and (5) the manual fallback in step 1.4's TIP is too minimal to satisfy LLM-independence. No TODOs or empty sections were found.
+**Overall assessment:** The task follows the template structure correctly and covers a coherent learning objective. All convention violations have been addressed. Remaining issues are conceptual: missing checkpoints for steps 1.3, 1.5, and 1.6, a checkpoint disguised as a numbered step in step 1.9, step 1.5 (Add navigation) is underspecified for students who don't use AI, and the manual fallback in step 1.4's TIP is too minimal to satisfy LLM-independence. No TODOs or empty sections were found.

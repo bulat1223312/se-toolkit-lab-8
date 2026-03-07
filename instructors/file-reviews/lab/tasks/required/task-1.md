@@ -83,14 +83,6 @@ No issues found.
 
 2. **Lines 42–63:** Step 1.2 combines issue creation (lines 44–48) and branch creation (lines 50–58) with an explanatory note (lines 60–63). The task template shows step 1.2 as only issue creation (`Title: [Task] <Task title>`). Branch creation is part of the Git workflow referenced in step 1.1.
 
-3. ~~**Lines 44–48:** Issue title is presented in a fenced code block without a language specifier. The task template uses inline code format: `Title: [Task] <Task title>`. If a code block is preferred, it should use `text` for consistency with the commit message format (convention 4.12).~~
-
-4. ~~**Lines 366–380:** "Finish the task" step inlines all PR creation instructions (7 numbered steps) instead of linking to the git-workflow wiki sections as specified in the template. Expected format:
-   ```
-   1. [Create a PR](../../../wiki/git-workflow.md#create-a-pr) with your changes.
-   2. [Get a PR review](../../../wiki/git-workflow.md#get-a-pr-review) and complete the subsequent steps in the `Git workflow`.
-   ```~~
-
 ### 4.1. Instructions wording
 
 No issues found.
@@ -121,7 +113,7 @@ No issues found.
 
 ### 4.8. Links and cross-references
 
-1. ~~**Lines 349–350:** `<task-branch>` placeholder is used in section 1.4.7 without being linked to its wiki definition in this section. It was first linked in section 1.4.6 (line 337), but convention 4.8 requires linking a concept the first time it is mentioned in a section.~~
+No issues found.
 
 ### 4.9. Notes, tips, warnings
 
@@ -161,7 +153,7 @@ Not applicable.
 
 ### 4.18. Inline formatting of technical terms
 
-1. ~~**Lines 13, 72, 88, 258, 264:** Inconsistent capitalization of "Autochecker" / "autochecker" throughout the document. Line 13 uses "Autochecker API" (capitalized), while lines 72, 88, 258, 264 use "autochecker" (lowercase). Pick one form and use it consistently.~~
+No issues found.
 
 ### 4.19. Steps with sub-steps
 
@@ -169,7 +161,7 @@ No issues found.
 
 ### 4.20. Placeholders in docs
 
-1. ~~**Lines 341–351:** `<task-branch>` placeholder appears in the terminal block of section 1.4.7 (lines 349–350) without a "Replace" instruction. Section 1.4.6 (line 337) properly includes `Replace [<task-branch>](../../../wiki/git-workflow.md#task-branch).` but section 1.4.7 does not.~~
+No issues found.
 
 ### 4.21. `docker compose up` commands
 
@@ -177,13 +169,7 @@ No issues found.
 
 ### 4.22. Environment variable references
 
-1. ~~**Lines 264–265:** `AUTOCHECKER_EMAIL` and `AUTOCHECKER_PASSWORD` are referenced in prose (inside the troubleshooting block) without links to their wiki sections. Convention 4.22 requires linking environment variables to their wiki definitions.~~
-
-2. ~~**Line 280:** `AUTOCHECKER_API_URL` is referenced in prose without a link to its wiki section.~~
-
-3. ~~**Lines 357–358:** First mention of `CADDY_HOST_PORT` in section 1.4.7 lacks the `.env.docker.secret` file link. Convention 4.22 requires linking the file name to indicate the source, and per convention 4.8 the file link must appear at least once per section.~~
-
-4. ~~**Line 360:** `API_KEY` is linked to its wiki section but `.env.docker.secret` file link is missing in section 1.4.7 (no file link appears anywhere in this section's prose).~~
+No issues found.
 
 ### 4.23. Horizontal rules
 
@@ -222,9 +208,9 @@ No empty sections found.
 | Conceptual — High       | 2     |
 | Conceptual — Medium     | 3     |
 | Conceptual — Low        | 2     |
-| Convention violations   | 11    |
+| Convention violations   | 3     |
 | TODOs                   | 0     |
 | Empty sections          | 0     |
-| **Total**               | **18** |
+| **Total**               | **10** |
 
-**Overall assessment:** The task is well-structured with clear steps, good checkpoints, proper troubleshooting blocks, and well-aligned acceptance criteria. The two high-severity issues are the missing Mermaid sequence diagram (required for multi-actor/multi-environment tasks) and the LLM-independence violation (step 1.4.2 requires an AI agent without providing a non-AI alternative or labeling the step as AI-required). The convention violations are mostly about environment variable linking and the "Finish the task" step deviating from the template by inlining PR instructions instead of linking to the wiki.
+**Overall assessment:** The task is well-structured with clear steps, good checkpoints, proper troubleshooting blocks, and well-aligned acceptance criteria. The two high-severity issues are the missing Mermaid sequence diagram (required for multi-actor/multi-environment tasks) and the LLM-independence violation (step 1.4.2 requires an AI agent without providing a non-AI alternative or labeling the step as AI-required). Remaining convention violations: the missing `<h4>Diagram</h4>` section (Section 1 #1 and 4.13 #1) and the combined issue+branch step (Section 1 #2).
