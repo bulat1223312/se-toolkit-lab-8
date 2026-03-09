@@ -26,7 +26,7 @@ Substitute actual week and meeting numbers for N and M.
 - **Direct quotes vs paraphrasing**: Use direct quotes when the speaker's exact wording carries meaning — strong opinions, definitions, commitments, or memorable phrasing. Paraphrase for routine discussion.
 - **Depth calibration**: Scale the report's depth proportionally to the meeting's length and substance. A 15-minute standup should not produce the same volume as a 2-hour planning session.
 - **Off-topic digressions** (tools, mentoring, industry news, etc.) should still be captured in the relevant section (usually Discussions).
-- **Recurring meetings**: If the transcript references a prior meeting or is clearly part of a series, note that context in the Agenda section.
+- **Recurring meetings**: If the transcript references a prior meeting or is clearly part of a series, note that context in the Executive summary.
 
 ## Instructions
 
@@ -57,13 +57,13 @@ A structured block at the top of the report:
 
 3-5 bullet points covering the most important outcomes of the meeting. This is for readers who will not read the full report. Focus on key decisions, blockers, and deadlines.
 
-### Agenda
+### Action points
 
-Brief summary (2-3 sentences) of what the meeting was about, who participated (by speaker label), and the overall purpose. If this is part of a recurring meeting series, note which iteration or reference prior sessions if mentioned.
+Concrete next steps with owners (by speaker label) and deadlines (if mentioned). Write each action point as a subsection heading followed by a prose paragraph that states the owner, priority (**[blocking]**, **[high]**, **[medium]**, or **[low]**), scheduling details, and any relevant context. If a task was mentioned but no owner was assigned, say so in the prose. Do not place owner or priority on a separate bold-label line before the paragraph. Every action point originates from a decision, discussion, or open question — cross-reference the source item using an anchor link (e.g., "Stems from [Decision #2: Use PostgreSQL](#1-use-postgresql-for-the-primary-data-store)"). If a single decision spawns multiple action points, each one should link back independently.
 
-### Status updates
+### Key dates and deadlines
 
-What is already done, built, deployed, or available before this meeting. Include specifics: which artifacts exist (documents, prototypes, deployed services, repos), what tools were used or demonstrated during the meeting, and any issues encountered. Write each distinct status item as a subsection heading followed by prose — do not use bold labels in a bullet list.
+Dates, deadlines, and milestones mentioned during the meeting, even in passing. Write each distinct date as a subsection heading followed by a prose paragraph describing what the date refers to, who mentioned it, and any relevant context. Do not use a bullet list with bold labels.
 
 ### Decisions
 
@@ -91,17 +91,9 @@ Speaker A proposed PostgreSQL, citing its JSON support for flexible schemas. Spe
 
 Things that were raised but not resolved — including proposals, hypotheticals, and "what if" suggestions that did not reach a conclusion. Include context on why they remain open, any preliminary opinions expressed, and any disagreements that prevented resolution. Cross-reference related decisions where applicable.
 
-### Action points
+### Status updates
 
-Concrete next steps with owners (by speaker label) and deadlines (if mentioned). Write each action point as a subsection heading followed by a prose paragraph that states the owner, priority (**[blocking]**, **[high]**, **[medium]**, or **[low]**), scheduling details, and any relevant context. If a task was mentioned but no owner was assigned, say so in the prose. Do not place owner or priority on a separate bold-label line before the paragraph. Every action point originates from a decision, discussion, or open question — cross-reference the source item using an anchor link (e.g., "Stems from [Decision #2: Use PostgreSQL](#1-use-postgresql-for-the-primary-data-store)"). If a single decision spawns multiple action points, each one should link back independently.
-
-### Key dates and deadlines
-
-Dates, deadlines, and milestones mentioned during the meeting, even in passing. Write each distinct date as a subsection heading followed by a prose paragraph describing what the date refers to, who mentioned it, and any relevant context. Do not use a bullet list with bold labels.
-
-### Glossary
-
-If the meeting introduced, defined, or clarified any terms, acronyms, or project-specific jargon, include them here. Omit this section if no new terminology was introduced. Write each term as a subsection heading (e.g., `### Sprint Review`) followed by a prose paragraph with the definition. This makes each term individually referenceable via a Markdown anchor.
+What is already done, built, deployed, or available before this meeting. Include specifics: which artifacts exist (documents, prototypes, deployed services, repos), what tools were used or demonstrated during the meeting, and any issues encountered. Write each distinct status item as a subsection heading followed by prose — do not use bold labels in a bullet list.
 
 ### Questions and answers
 
@@ -115,6 +107,10 @@ When a speaker presents slides, gives a demo, or shares a screen for an extended
 ### Discussions
 
 Extended conversations, off-topic digressions (tools, mentoring experiences, industry news), and other substantive exchanges that are not direct Q&A pairs. Write each distinct discussion as a subsection heading (e.g., `### Discussion: Deployment strategy trade-offs`) followed by prose paragraphs. The heading contains only the topic — do not use bold `**Discussion:**` labels, and do not append speaker attribution or timestamps to the heading. State who participated and the relevant timestamp range in the opening sentence of the paragraph instead.
+
+### Glossary
+
+If the meeting introduced, defined, or clarified any terms, acronyms, or project-specific jargon, include them here. Omit this section if no new terminology was introduced. Write each term as a subsection heading (e.g., `### Sprint Review`) followed by a prose paragraph with the definition. This makes each term individually referenceable via a Markdown anchor.
 
 ### Coverage check
 
