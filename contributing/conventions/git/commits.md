@@ -38,7 +38,7 @@ area of change:
 
 `wiki` | `instructors` | `docs` | `readme` | `caddy` | `lab` |
 `frontend` | `backend` | `tests` | `vscode` | `git` | `github` |
-`claude` | `nix` | `docker` | `database` | `contributors` | `markdownlint`
+`agent` | `nix` | `docker` | `database` | `contributors` | `markdownlint`
 
 ### 3.1. Scope mapping
 
@@ -53,7 +53,7 @@ area of change:
 - `vscode` — `.vscode/` settings and extensions
 - `git` — `.gitignore`, `.gitmodules`, git config
 - `github` — `.github/` (workflows, issue templates, PR templates)
-- `claude` — `.claude/` (skills, settings)
+- `agent` — `.agents/` (skills, settings)
 - `nix` — `flake.nix`, `flake.lock`, Nix-related config
 - `docker` — `Dockerfile`, `compose.yaml`, Docker-related config
 - `database` — `.sql` files, migrations, schema
