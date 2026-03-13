@@ -79,17 +79,12 @@ Update `agent.py` to define `read_file` and `list_files` as function-calling sch
 
 Update `AGENT.md` to document the tools, the agentic loop, and your system prompt strategy.
 
-### 4. Tests (5 more tests)
+### 4. Tests (2 more tests)
 
-Add 5 regression tests for the documentation agent. Example questions:
+Add 2 regression tests for the documentation agent. Example questions:
 
 - `"How do you resolve a merge conflict?"` → expects `read_file` in tool_calls, `wiki/git-workflow.md` in source.
 - `"What files are in the wiki?"` → expects `list_files` in tool_calls.
-- `"What is a Docker volume?"` → expects `read_file` in tool_calls, `wiki/docker` in source.
-
-### 5. Deployment
-
-Deploy the updated agent to your VM. Make sure `.env.agent.secret` is configured on the VM.
 
 ## Acceptance criteria
 
@@ -100,6 +95,5 @@ Deploy the updated agent to your VM. Make sure `.env.agent.secret` is configured
 - [ ] The `source` field correctly identifies the wiki section that answers the question.
 - [ ] Tools do not access files outside the project directory.
 - [ ] `AGENT.md` documents the tools and agentic loop.
-- [ ] 5 tool-calling regression tests exist and pass.
-- [ ] The agent works on the VM via SSH.
+- [ ] 2 tool-calling regression tests exist and pass.
 - [ ] [Git workflow](../../../wiki/git-workflow.md): issue `[Task] The Documentation Agent`, branch, PR with `Closes #...`, partner approval, merge.

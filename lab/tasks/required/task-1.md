@@ -38,11 +38,14 @@ Your agent needs an LLM that supports the OpenAI-compatible chat completions API
 
 **Recommended models** (free, reliable tool calling):
 
-| Model                                    | Tool calling | Notes             |
-| ---------------------------------------- | ------------ | ----------------- |
-| `meta-llama/llama-4-scout:free`          | Strong       | Best free option  |
-| `meta-llama/llama-3.3-70b-instruct:free` | Strong       | Reliable fallback |
-| `qwen/qwen-2.5-72b-instruct:free`        | Good         | Alternative       |
+| Model | Tool calling | Notes |
+|-------|-------------|-------|
+| `meta-llama/llama-3.3-70b-instruct:free` | Strong | Default in `.env.agent.example` |
+| `mistralai/mistral-small-3.1-24b-instruct:free` | Strong | Good alternative |
+| `qwen/qwen3-coder:free` | Good | Alternative |
+
+> [!TIP]
+> Free models change frequently on OpenRouter. Check the [free models collection](https://openrouter.ai/collections/free-models) for the latest list. Filter for models that support **tool calling** — you will need this in Tasks 2–3.
 
 Register in OpenRouter and get an API key from them. This will be your LLM_API_KEY in `.env.agent.secret` (gitignored by the `*.secret` pattern). An example file is provided:
 
@@ -54,9 +57,12 @@ Edit `.env.agent.secret` and fill in `LLM_API_KEY`, `LLM_API_BASE`, and `LLM_MOD
 
 > **Note:** This is **not** the same as `LMS_API_KEY` in `.env.docker.secret`. That one protects your backend LMS endpoints. `LLM_API_KEY` authenticates with your LLM provider.
 
-Set up the same LLM credentials on your VM too — the autochecker will run your agent there.
-
-> **Note:** Free-tier models can hit rate limits (`429`) and occasional `5xx` errors. Keep this in mind when designing your agent and see [Optional Task 1](../optional/task-1.md#advanced-agent-features) for retry logic with backoff.
+> [!WARNING]
+> **Rate limits on free models:**
+> - Free-tier models have a **50 requests per day** limit per account.
+> - Free models can also be **temporarily unavailable** due to upstream provider load. If you get a `429` error with a message about "temporarily rate-limited upstream", it means the model is overloaded — not that you hit your daily limit. Try again later or switch to a different free model.
+> - Plan your testing carefully: use `run_eval.py --index N` to test one question at a time instead of running the full eval repeatedly.
+> - Do not run `run_eval.py` until you have completed all three required tasks. Each run uses 10 requests.
 
 ## Deliverables
 
@@ -72,19 +78,9 @@ Create `agent.py` in the project root. The system prompt can be minimal for now 
 
 Create `AGENT.md` in the project root documenting how the agent works, which LLM provider you chose, and how to run it.
 
-### 4. Tests (5 tests)
+### 4. Tests (1 test)
 
-Create 5 regression tests that run `agent.py` as a subprocess, parse the stdout JSON, and check that `answer` and `tool_calls` are present.
-
-### 5. Deployment
-
-Deploy `agent.py` to your VM. Verify it works:
-
-```bash
-uv run agent.py "What does REST stand for?"
-```
-
-The autochecker will SSH in and run your agent the same way.
+Create 1 regression test that runs `agent.py` as a subprocess, parses the stdout JSON, and checks that `answer` and `tool_calls` are present.
 
 ## Acceptance criteria
 
@@ -93,6 +89,5 @@ The autochecker will SSH in and run your agent the same way.
 - [ ] `uv run agent.py "..."` outputs valid JSON with `answer` and `tool_calls`.
 - [ ] The API key is stored in `.env.agent.secret` (not hardcoded).
 - [ ] `AGENT.md` documents the solution architecture.
-- [ ] 5 regression tests exist and pass.
-- [ ] The agent works on the VM via SSH.
+- [ ] 1 regression test exists and passes.
 - [ ] [Git workflow](../../../wiki/git-workflow.md): issue `[Task] Call an LLM from Code`, branch, PR with `Closes #...`, partner approval, merge.
