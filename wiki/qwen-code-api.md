@@ -159,7 +159,7 @@ Complete these steps:
    ```terminal
    curl -s http://<qwen-code-api-address>:<qwen-code-api-port>/v1/chat/completions \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <qwen-api-key>" \
+     -H "Authorization: Bearer <qwen-code-api-key>" \
      -d '{"model":"<qwen-model>","messages":[{"role":"user","content":"What is 2+2?"}]}' \
      | jq .
    ```
@@ -170,7 +170,7 @@ Complete these steps:
      - `localhost` (REMOTE)
      - [`<your-vm-ip-address>`](vm.md#your-vm-ip-address-placeholder) (LOCAL)
    - `<qwen-code-api-port>` with the value of `HOST_PORT`
-   - `<qwen-api-key>` with the value of `QWEN_CODE_API_KEY`
+   - `<qwen-code-api-key>` with the value of `QWEN_CODE_API_KEY`
    - `<qwen-model>` with one of the [available models](./qwen-code.md#view-available-models)
 
 3. When you run it, the output should be similar to this:
