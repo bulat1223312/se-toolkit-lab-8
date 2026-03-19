@@ -12,14 +12,7 @@
 
 ## About the LMS API deployment
 
-This page describes how to deploy the [LMS API](./lms-api.md#about-the-lms-api) to [your VM](./vm.md#your-vm) using [`Docker Compose`](./docker-compose.md#what-is-docker-compose).
-
-The deployment starts four [services](./docker-compose.md#service) defined in [`docker-compose.yml`](./docker-compose-yml.md#what-is-docker-composeyml):
-
-- [`app`](./docker-compose-yml.md#app-service)
-- [`postgres`](./docker-compose-yml.md#postgres-service)
-- [`pgadmin`](./docker-compose-yml.md#pgadmin-service)
-- [`caddy`](./docker-compose-yml.md#caddy-service).
+This page describes how to deploy the [LMS API](./lms-api.md#about-the-lms-api) and additional [services](./docker-compose-yml.md#services) on [your VM](./vm.md#your-vm) using [`Docker Compose`](./docker-compose.md#what-is-docker-compose).
 
 ## Deploy the LMS API on the VM
 
