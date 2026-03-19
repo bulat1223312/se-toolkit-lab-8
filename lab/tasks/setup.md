@@ -264,7 +264,7 @@ See [tools](../../wiki/software-types.md#tool).
 
 ### 1.12. (UPD) Set up the `Qwen Code` API (REMOTE)
 
-1. [Set up the `Qwen Code` API on your VM](../../wiki/qwen-code-api.md#set-up-the-qwen-code-api-remote).
+1. [Set up the `Qwen Code` API on your VM](../../wiki/qwen-code-api-deployment.md#deploy-the-qwen-code-api-remote).
 2. [Check that the `Qwen Code` is accessible](../../wiki/qwen-code-api.md#check-that-the-qwen-code-api-is-accessible) on your local machine (LOCAL).
 
 ### 1.14. Set up the `Autochecker` bot
