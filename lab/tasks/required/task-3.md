@@ -16,7 +16,7 @@ This builds on Lab 6 — same tool use pattern (give the LLM tools, let it decid
 An intent router: user message → LLM with tool definitions → API calls → formatted response.
 
 ```terminal
-$ python bot/bot.py --test "which lab has the lowest pass rate?"
+$ uv run bot.py --test "which lab has the lowest pass rate?"
 Based on the data, Lab 03 has the lowest average pass rate at 62.3%.
 - Backend API: 58.1% (145 attempts)
 - Security Hardening: 66.5% (132 attempts)
@@ -106,11 +106,11 @@ Add keyboard buttons so users can discover actions without typing. For example, 
 Try these on your VM:
 
 ```terminal
-cd ~/se-toolkit-lab-7
-python bot/bot.py --test "what labs are available"
-python bot/bot.py --test "which lab has the lowest pass rate"
-python bot/bot.py --test "who are the top 5 students in lab 4"
-python bot/bot.py --test "asdfgh"
+cd ~/se-toolkit-lab-7/bot
+uv run bot.py --test "what labs are available"
+uv run bot.py --test "which lab has the lowest pass rate"
+uv run bot.py --test "who are the top 5 students in lab 4"
+uv run bot.py --test "asdfgh"
 ```
 
 The first three should return real answers with data from your backend. The last should return a helpful fallback, not a crash.

@@ -35,7 +35,7 @@ This is what a customer might tell you. Your job is to turn it into a working pr
 **P0 — Must have**
 
 1. Testable handler architecture — handlers work without Telegram
-2. CLI test mode: `python bot/bot.py --test "/command"` prints response to stdout
+2. CLI test mode: `cd bot && uv run bot.py --test "/command"` prints response to stdout
 3. `/start` — welcome message
 4. `/help` — lists all available commands
 5. `/health` — calls backend, reports up/down status

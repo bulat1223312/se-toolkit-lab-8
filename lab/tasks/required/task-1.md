@@ -7,7 +7,7 @@ In this task, you use your coding agent to create a development plan and project
 ## Requirements targeted
 
 - **P0.1** Testable handler architecture — handlers work without Telegram
-- **P0.2** CLI test mode: `python bot/bot.py --test "/command"` prints response to stdout
+- **P0.2** CLI test mode: `cd bot && uv run bot.py --test "/command"` prints response to stdout
 
 ## What you will build
 
@@ -20,7 +20,7 @@ se-toolkit-lab-7/
 │   ├── handlers/           ← command handlers (no Telegram dependency)
 │   ├── services/           ← API client, LLM client
 │   ├── config.py           ← env var loading
-│   ├── requirements.txt    ← bot dependencies
+│   ├── pyproject.toml    ← bot dependencies
 │   └── PLAN.md             ← development plan
 ├── backend/                ← existing
 ├── frontend/               ← existing
@@ -34,11 +34,12 @@ The key idea is **testable handlers**: your command logic is just functions that
 The autochecker verifies the bot via `--test` — no Telegram connection needed:
 
 ```terminal
-python bot/bot.py --test "/start"       # → prints welcome message
-python bot/bot.py --test "/help"        # → prints command list
-python bot/bot.py --test "/health"      # → prints backend status
-python bot/bot.py --test "/scores lab-04"
-python bot/bot.py --test "what labs are available"    # Task 3
+cd bot
+uv run bot.py --test "/start"                    # → prints welcome message
+uv run bot.py --test "/help"                     # → prints command list
+uv run bot.py --test "/health"                   # → prints backend status
+uv run bot.py --test "/scores lab-04"
+uv run bot.py --test "what labs are available"    # Task 3
 ```
 
 - Prints response to **stdout**, exits with code **0**
@@ -59,9 +60,9 @@ Must support `--test` mode. Handlers can return placeholder text for now — rea
 
 Handler modules separated from the Telegram transport layer. The `--test` mode calls them directly without Telegram.
 
-### 4. Dependencies (`bot/requirements.txt`)
+### 4. Dependencies (`bot/pyproject.toml`)
 
-Bot-specific Python dependencies. Must install without errors.
+Bot-specific Python project with dependencies. `cd bot && uv sync` must work without errors.
 
 ### 5. Environment files
 
@@ -72,9 +73,9 @@ Bot-specific Python dependencies. Must install without errors.
 Run this on your VM:
 
 ```terminal
-cd ~/se-toolkit-lab-7
-uv pip install -r bot/requirements.txt
-python bot/bot.py --test "/start"
+cd ~/se-toolkit-lab-7/bot
+uv sync
+uv run bot.py --test "/start"
 ```
 
 You should see a welcome message printed to the terminal. If it prints something and exits without errors — the scaffold works.
@@ -82,9 +83,9 @@ You should see a welcome message printed to the terminal. If it prints something
 ## Acceptance criteria
 
 - [ ] `bot/PLAN.md` exists with at least 100 words.
-- [ ] `bot/requirements.txt` exists and installs without errors.
+- [ ] `bot/pyproject.toml` exists and `cd bot && uv sync` succeeds.
 - [ ] `bot/handlers/` directory exists with at least one module.
-- [ ] `python bot/bot.py --test "/start"` exits 0 with non-empty output.
+- [ ] `cd bot && uv run bot.py --test "/start"` exits 0 with non-empty output.
 - [ ] `.env.agent.secret` exists on the VM with `BOT_TOKEN`, `LMS_API_URL`, `LMS_API_KEY`.
 - [ ] Repo is cloned at `~/se-toolkit-lab-7` on the VM.
 - [ ] Git workflow followed (issue, branch, PR, review, merge).

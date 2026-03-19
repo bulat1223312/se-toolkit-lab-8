@@ -164,7 +164,7 @@ Mirrors Lab 6 setup checks + deployment + sync.
 **Deliverables:**
 - `bot/PLAN.md` — development plan produced with agent assistance
 - Bot code in a `bot/` directory with separated handler layer
-- Bot dependencies in `bot/requirements.txt` (repo already has `pyproject.toml` for backend)
+- Bot dependencies in `bot/pyproject.toml` (managed with `uv sync`)
 - `BOT_TOKEN` added to `.env.agent.example`
 - Bot entry point (`bot/bot.py` or `bot/main.py`) that starts without crashing
 - CLI test mode wired up (even if handlers return placeholder text)
@@ -179,10 +179,10 @@ Mirrors Lab 6 setup checks + deployment + sync.
 |----|-------|---------|-----|
 | t1-plan | `bot/PLAN.md` exists and has ≥100 words | GitHub | file_exists + file_word_count |
 | t1-env | `.env.agent.example` contains `BOT_TOKEN` | GitHub | regex_in_file |
-| t1-deps | `bot/requirements.txt` exists | GitHub | file_exists |
-| t1-handlers | Handler module exists separately from bot entry point | GitHub | file_exists — check for `bot/handlers.py` or `bot/handlers/` |
-| t1-install | Bot dependencies install without errors | SSH | `pip install -r bot/requirements.txt` on VM |
-| t1-test-mode | `python bot/bot.py --test "/start"` exits 0 and produces output | SSH | check exit code + stdout non-empty |
+| t1-deps | `bot/pyproject.toml` exists | GitHub | file_exists |
+| t1-handlers | Handler directory exists | GitHub | file_exists — `bot/handlers/` |
+| t1-install | Bot dependencies install without errors | SSH | `cd bot && uv sync` on VM |
+| t1-test-mode | `cd bot && uv run bot.py --test "/start"` exits 0 and produces output | SSH | check exit code + stdout non-empty |
 
 ### Task 2 — Backend Integration
 
@@ -339,7 +339,7 @@ agent is embedded inside a user-facing product.
 - SSH: connectivity, backend running, database has data (ETL synced)
 
 **Task 1 — Structure & Scaffold (6 checks)**
-- GitHub: bot/PLAN.md, .env.agent.example has BOT_TOKEN, bot/requirements.txt, handler module
+- GitHub: bot/PLAN.md, bot/pyproject.toml, bot/handlers/ directory
 - SSH: dependencies install, `--test "/start"` works
 
 **Task 2 — Backend Integration (6 checks)**
@@ -377,18 +377,18 @@ The bot must support a `--test` flag for offline command verification:
 
 ```bash
 # Syntax (run from repo root)
-python bot/bot.py --test "<message>"
+cd bot && uv run bot.py --test "<message>"
 
 # Slash commands
-python bot/bot.py --test "/start"
-python bot/bot.py --test "/help"
-python bot/bot.py --test "/health"
-python bot/bot.py --test "/labs"
+cd bot && uv run bot.py --test "/start"
+cd bot && uv run bot.py --test "/help"
+cd bot && uv run bot.py --test "/health"
+cd bot && uv run bot.py --test "/labs"
 
 # Natural language (intent routing)
-python bot/bot.py --test "what labs are available"
-python bot/bot.py --test "which lab has the lowest pass rate"
-python bot/bot.py --test "asdfgh"
+cd bot && uv run bot.py --test "what labs are available"
+cd bot && uv run bot.py --test "which lab has the lowest pass rate"
+cd bot && uv run bot.py --test "asdfgh"
 ```
 
 **Behavior:**
@@ -440,7 +440,7 @@ se-toolkit-lab-7/           ← forked repo (already has backend/, frontend/, et
 │   │   ├── api_client.py   ← HTTP client for LMS backend
 │   │   └── llm.py          ← LLM integration (OpenRouter/Qwen)
 │   ├── config.py           ← env var loading
-│   ├── requirements.txt    ← bot-specific dependencies
+│   ├── pyproject.toml      ← bot-specific dependencies (uv sync)
 │   ├── Dockerfile          ← bot container
 │   └── PLAN.md             ← development plan from Qwen Code
 ├── backend/                ← existing (from lab-6 fork)

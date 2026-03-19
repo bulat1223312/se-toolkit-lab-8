@@ -13,7 +13,7 @@ The bot works locally via `--test` mode, but it's not a real product until it's 
 
 ### 1. Bot Dockerfile (`bot/Dockerfile`)
 
-Installs dependencies from `bot/requirements.txt` and runs the bot entry point.
+Installs dependencies from `bot/pyproject.toml` and runs the bot entry point.
 
 ### 2. Bot service in `docker-compose.yml`
 

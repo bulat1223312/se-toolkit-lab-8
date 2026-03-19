@@ -16,10 +16,10 @@ A bot that only returns placeholder text isn't useful. In this task, you connect
 5 slash commands hitting the real backend, all verifiable via `--test`:
 
 ```terminal
-$ python bot/bot.py --test "/health"
+$ uv run bot.py --test "/health"
 Backend is healthy. 42 items available.
 
-$ python bot/bot.py --test "/labs"
+$ uv run bot.py --test "/labs"
 Available labs:
 - Lab 01 — Products, Architecture & Roles
 - Lab 02 — Run, Fix, and Deploy
@@ -28,7 +28,7 @@ Available labs:
 - Lab 05 — Data Pipeline and Analytics
 - Lab 06 — Build Your Own Agent
 
-$ python bot/bot.py --test "/scores lab-04"
+$ uv run bot.py --test "/scores lab-04"
 Pass rates for Lab 04:
 - Repository Setup: 92.1% (187 attempts)
 - Back-end Testing: 71.4% (156 attempts)
@@ -38,7 +38,7 @@ Pass rates for Lab 04:
 When the backend is down, the bot should show a friendly message — not a Python traceback:
 
 ```terminal
-$ python bot/bot.py --test "/health"
+$ uv run bot.py --test "/health"
 Backend is not responding. Check that the services are running.
 ```
 
@@ -76,19 +76,21 @@ All on `localhost:42002`, require `Authorization: Bearer YOUR_LMS_API_KEY`:
 Run all commands on your VM:
 
 ```terminal
-cd ~/se-toolkit-lab-7
-python bot/bot.py --test "/start"
-python bot/bot.py --test "/help"
-python bot/bot.py --test "/health"
-python bot/bot.py --test "/labs"
-python bot/bot.py --test "/scores lab-04"
+cd ~/se-toolkit-lab-7/bot
+uv run bot.py --test "/start"
+uv run bot.py --test "/help"
+uv run bot.py --test "/health"
+uv run bot.py --test "/labs"
+uv run bot.py --test "/scores lab-04"
 ```
 
 Each should print real data. Then test error handling — stop the backend and try again:
 
 ```terminal
+cd ~/se-toolkit-lab-7
 docker compose --env-file .env.docker.secret stop app
-python bot/bot.py --test "/health"
+cd bot && uv run bot.py --test "/health"
+cd ~/se-toolkit-lab-7
 docker compose --env-file .env.docker.secret start app
 ```
 

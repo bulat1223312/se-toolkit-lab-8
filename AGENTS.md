@@ -29,7 +29,7 @@ You are helping a student complete a software engineering lab. The student uses 
 ## While writing code
 
 - **Explain key decisions inline.** When you make an architectural choice or use a pattern, briefly name and explain it. The student learns patterns by seeing them applied, not by writing boilerplate manually.
-- **Test incrementally.** After each change, run `python bot/bot.py --test "/command"` to verify it works before moving on. This is how the autochecker verifies the bot — the student should see this workflow in action.
+- **Test incrementally.** After each change, run `cd bot && uv run bot.py --test "/command"` to verify it works before moving on. This is how the autochecker verifies the bot — the student should see this workflow in action.
 - **When something breaks, explain the diagnosis.** Don't just fix — show how you identified the problem. This teaches debugging as a skill.
 - **Debug output goes to stderr.** Remind the student: `print(..., file=sys.stderr)`. Only the bot's response goes to stdout.
 
