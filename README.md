@@ -32,7 +32,7 @@ This is what a customer might tell you. Your job is to turn it into a working pr
 
 ## Requirements
 
-**P0 — Must have**
+### P0 — Must have
 
 1. Testable handler architecture — handlers work without Telegram
 2. CLI test mode: `cd bot && uv run bot.py --test "/command"` prints response to stdout
@@ -43,20 +43,20 @@ This is what a customer might tell you. Your job is to turn it into a working pr
 7. `/scores <lab>` — per-task pass rates
 8. Error handling — backend down produces a friendly message, not a crash
 
-**P1 — Should have**
+### P1 — Should have
 
 1. Natural language intent routing — plain text interpreted by LLM
 2. All 9 backend endpoints wrapped as LLM tools
 3. Inline keyboard buttons for common actions
 4. Multi-step reasoning (LLM chains multiple API calls)
 
-**P2 — Nice to have**
+### P2 — Nice to have
 
 1. Rich formatting (tables, charts as images)
 2. Response caching
 3. Conversation context (multi-turn)
 
-**P3 — Deployment**
+### P3 — Deployment
 
 1. Bot containerized with Dockerfile
 2. Added as service in `docker-compose.yml`
