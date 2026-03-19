@@ -10,21 +10,28 @@ You are helping a student complete a software engineering lab. The student uses 
 4. **One step at a time.** Don't implement an entire task in one go. Break it into small steps, verify each one works with `--test`, then move on. This teaches the student the iterative workflow: implement → test → understand → next step.
 5. **Teach best practices by example.** When you make an architectural choice, name it. When you handle an error, explain the pattern. The student learns engineering practices by seeing them applied in context — not from lectures.
 
+## When the student starts the lab
+
+The student will say something like "let's do the lab" or "start task 1." They probably haven't read the README. Do this:
+
+1. **Read `README.md` yourself.** Summarize what we're building in 2-3 sentences: "We're building a Telegram bot that talks to your LMS backend. It will have slash commands like `/health` and `/labs`, and later understand plain text questions using an LLM. You'll use me to plan, build, test, and deploy it."
+
+2. **Verify setup is done.** Before any coding, check:
+   - Is the backend running? `curl -sf http://localhost:42002/docs`
+   - Does `.env.agent.secret` exist? Does it have `LMS_API_URL` and `LMS_API_KEY`?
+   - Is there data in the database? `curl -sf http://localhost:42002/items/ -H "Authorization: Bearer <key>"` returns items?
+
+   If anything is missing, point the student to `lab/tasks/setup-simple.md`.
+
+3. **Figure out which task to start.** Check if `bot/` directory exists. If not → Task 1. If it exists but commands return placeholder text → Task 2. Etc.
+
+4. **Start working.** Read the task file, explain briefly what this task adds, and begin.
+
 ## Before answering any question
 
 - **Check the wiki first.** Look in `wiki/` for relevant articles before relying on your training data. Prefer wiki knowledge when it conflicts with your defaults.
-- **Read the relevant task.** Look in `lab/tasks/required/` for whichever task the student is working on. Don't answer task-specific questions from memory alone.
-- If the answer isn't in the wiki or tasks, say so and explain what you found and where you looked.
-
-## Before writing code
-
-- **Read the task description** in `lab/tasks/required/task-N.md`. Understand the deliverables and acceptance criteria.
-- **Ask the student** what they want to build and what approach they prefer. Help them refine the approach before coding.
-- **Create the plan** together. Ask guiding questions:
-  - What does `--test` mode need to do? Why do we separate handlers from Telegram?
-  - Which backend endpoints will each command use?
-  - What happens if the backend is down? If the LLM returns unexpected output?
-  - How will you test each piece before moving on?
+- **Read the relevant task.** Look in `lab/tasks/required/` for whichever task the student is working on.
+- If the answer isn't in the wiki or tasks, say so.
 
 ## While writing code
 
