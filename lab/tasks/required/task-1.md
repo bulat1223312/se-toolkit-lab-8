@@ -28,32 +28,6 @@ python bot/bot.py --test "/start"
 
 This prints the bot's response to stdout and exits — no Telegram connection needed. The autochecker uses this to verify your bot's behavior.
 
-## Working with your coding agent
-
-Use your coding agent to help you plan, scaffold, and understand the architecture. Don't just ask it to build — ask it to teach you along the way. Here are prompts to try at each stage:
-
-**Understanding the architecture:**
-
-> Explain what "testable handler architecture" means. Why should I separate handlers from the Telegram transport layer? Give me an analogy.
-
-> What is `--test` mode and why does the autochecker need it? Walk me through what happens when I run `python bot/bot.py --test "/start"`.
-
-**Planning:**
-
-> Here are the requirements for my Telegram bot. Create a development plan — but first, ask me questions about anything that's unclear.
-
-> What files and modules do I need? For each one, explain its responsibility in one sentence.
-
-**Scaffolding:**
-
-> Scaffold the project. For each file you create, explain why it exists and how it connects to the others.
-
-> Show me the code path: when `--test "/start"` runs, which functions get called in what order?
-
-**Verifying:**
-
-> I ran `python bot/bot.py --test "/start"` and it works. Now explain: if I wanted to add a new command `/foo`, what exactly would I need to change?
-
 ## Prioritized requirements
 
 Give these to your coding agent as context:
@@ -126,3 +100,29 @@ Add `BOT_TOKEN` to the existing `.env.agent.example` file.
 - [ ] Handler module exists separately from the bot entry point.
 - [ ] `python bot/bot.py --test "/start"` exits with code 0 and prints non-empty output.
 - [ ] Changes follow the Git workflow (issue, branch, PR, review, merge).
+
+## Working with your coding agent
+
+Use your coding agent to help you plan, scaffold, and understand the architecture. Here are prompts to try at each stage:
+
+**Understanding the architecture:**
+
+> Explain what "testable handler architecture" means. Why should I separate handlers from the Telegram transport layer? Give me an analogy.
+
+> What is `--test` mode and why does the autochecker need it? Walk me through what happens when I run `python bot/bot.py --test "/start"`.
+
+**Planning:**
+
+> Here are the requirements for my Telegram bot. Create a development plan — but first, ask me questions about anything that's unclear.
+
+> What files and modules do I need? For each one, explain its responsibility in one sentence.
+
+**Scaffolding:**
+
+> Scaffold the project. For each file you create, explain why it exists and how it connects to the others.
+
+> Show me the code path: when `--test "/start"` runs, which functions get called in what order?
+
+**Verifying:**
+
+> I ran `python bot/bot.py --test "/start"` and it works. Now explain: if I wanted to add a new command `/foo`, what exactly would I need to change?

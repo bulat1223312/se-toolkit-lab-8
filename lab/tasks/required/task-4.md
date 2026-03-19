@@ -2,16 +2,6 @@
 
 Deploy the bot on your VM alongside the backend and document the setup.
 
-## Working with your coding agent
-
-> Explain multi-stage Docker builds. Why not just copy everything into one image?
-
-> I need to add a `bot` service to my existing `docker-compose.yml`. The bot needs to reach the backend — explain Docker networking. Why can't I use `localhost` inside a container?
-
-> The bot container starts but can't connect to the backend. Help me debug — what's the service name, what port, what's the network topology?
-
-> Help me write the "Deploy" section of the README. A new developer should be able to deploy this from scratch by reading it.
-
 ## What you will do
 
 Add the bot as a Docker service in your existing `docker-compose.yml`, verify it responds in Telegram, and document the deployment.
@@ -45,3 +35,13 @@ Add a "Deploy" section to the repo README explaining how to deploy the bot (env 
 - [ ] `git remote get-url origin` on the VM matches the student's GitHub repo.
 - [ ] README contains a section with "deploy" in the heading.
 - [ ] Bot responds to messages in Telegram (TA-verified during demo).
+
+## Working with your coding agent
+
+> Explain multi-stage Docker builds. Why not just copy everything into one image?
+
+> I need to add a `bot` service to my existing `docker-compose.yml`. The bot needs to reach the backend — explain Docker networking. Why can't I use `localhost` inside a container?
+
+> The bot container starts but can't connect to the backend. Help me debug — what's the service name, what port, what's the network topology?
+
+> Help me write the "Deploy" section of the README. A new developer should be able to deploy this from scratch by reading it.

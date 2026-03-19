@@ -16,32 +16,6 @@ Here's the breakdown by task:
 
 This builds directly on Lab 6 — you reuse the pattern of giving an LLM a set of tools and letting it decide which to call. The difference: in Lab 6 you built a CLI agent, here the agent is embedded inside a user-facing Telegram bot.
 
-## Working with your coding agent
-
-This is the most complex task — take it step by step. The key concept is **LLM tool use / function calling**: you give the LLM a list of tools it can call, and it decides which one(s) to use based on the user's message.
-
-**Understanding tool use:**
-
-> Explain LLM function calling / tool use. How does the LLM decide which tool to call? What's the difference between the system prompt and tool definitions?
-
-> Show me a minimal example: one tool, one user message, the full message flow (user → LLM → tool_call → execute → feed back → final answer). I want to understand the loop.
-
-**Designing tools:**
-
-> Here are my backend endpoints [paste the table from the task]. Help me design tool schemas for them. What makes a good tool description — why does description quality matter more than prompt engineering?
-
-> I have 3 tools defined. Before implementing the loop, walk me through: if the user says "which lab has the lowest pass rate?", what should the LLM's reasoning look like? Which tools would it call and in what order?
-
-**Debugging intent routing:**
-
-> The LLM keeps returning a text answer instead of calling a tool. Help me debug — show me the messages I'm sending and explain what might be wrong.
-
-> Test this: `--test "which lab has the lowest pass rate?"`. The answer is wrong. Help me trace through: what tools were called, what data came back, where did the reasoning go wrong?
-
-**Fallback handling:**
-
-> The user typed "asdfgh". What should happen? Implement a fallback that's helpful, not just "I don't understand." Explain why good fallbacks matter for UX.
-
 ## How it works
 
 ```
@@ -150,3 +124,29 @@ Keyboard markup (inline or reply) for common actions. Must be present in the sou
 - [ ] Source code contains keyboard/button setup (`InlineKeyboardMarkup`, `ReplyKeyboardMarkup`, or equivalent).
 - [ ] Source code defines tool/function schemas for the LLM (at least 3 tools).
 - [ ] Changes follow the Git workflow (issue, branch, PR, review, merge).
+
+## Working with your coding agent
+
+This is the most complex task — take it step by step. The key concept is **LLM tool use / function calling**: you give the LLM a list of tools it can call, and it decides which one(s) to use based on the user's message.
+
+**Understanding tool use:**
+
+> Explain LLM function calling / tool use. How does the LLM decide which tool to call? What's the difference between the system prompt and tool definitions?
+
+> Show me a minimal example: one tool, one user message, the full message flow (user → LLM → tool_call → execute → feed back → final answer). I want to understand the loop.
+
+**Designing tools:**
+
+> Here are my backend endpoints [paste the table from the task]. Help me design tool schemas for them. What makes a good tool description — why does description quality matter more than prompt engineering?
+
+> I have 3 tools defined. Before implementing the loop, walk me through: if the user says "which lab has the lowest pass rate?", what should the LLM's reasoning look like? Which tools would it call and in what order?
+
+**Debugging intent routing:**
+
+> The LLM keeps returning a text answer instead of calling a tool. Help me debug — show me the messages I'm sending and explain what might be wrong.
+
+> Test this: `--test "which lab has the lowest pass rate?"`. The answer is wrong. Help me trace through: what tools were called, what data came back, where did the reasoning go wrong?
+
+**Fallback handling:**
+
+> The user typed "asdfgh". What should happen? Implement a fallback that's helpful, not just "I don't understand." Explain why good fallbacks matter for UX.
