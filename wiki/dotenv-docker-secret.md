@@ -231,7 +231,7 @@ Default: `42002`
 
 The [LMS API key](./lms-api.md#lms-api-key).
 
-Default: `my-secret-api-key`
+Default: `<lms-api-key>`
 
 ## `Autochecker` API
 
@@ -247,13 +247,13 @@ Default: `https://auche.namaz.live`
 
 The login used to authenticate with the autochecker API.
 
-Default: [`<autochecker-api-login>`](./autochecker-api.md#autochecker-api-login-placeholder)
+Default: `<autochecker-api-login>`
 
 ### `AUTOCHECKER_API_PASSWORD`
 
 The password used to authenticate with the autochecker API.
 
-Default: [`<autochecker-api-password>`](./autochecker-api.md#autochecker-api-password-placeholder)
+Default: `<autochecker-api-password>`.
 
 ## Constants
 
