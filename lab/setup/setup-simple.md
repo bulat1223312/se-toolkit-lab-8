@@ -47,9 +47,13 @@ We refer to your fork as `fork` and to the original repo as `upstream`.
 
 1. [Protect a branch](../../wiki/github.md#protect-a-branch).
 
-### 1.2. Clone your fork and set up the environment
+### 1.2. SSH into your VM and set up the environment there
 
-1. [Connect to your VM](../../wiki/vm-access.md#connect-to-the-vm-as-the-user-user-local) and clone your fork there:
+1. [Connect to your VM](../../wiki/vm-access.md#connect-to-the-vm-as-the-user-user-local).
+
+   Do the whole lab from this VM shell. Keep using it for the steps below and for the rest of the lab.
+
+2. Clone your fork there:
 
    ```terminal
    git clone --recurse-submodules https://github.com/YOUR_GITHUB_USERNAME/se-toolkit-lab-8
@@ -60,11 +64,10 @@ We refer to your fork as `fork` and to the original repo as `upstream`.
    > [!NOTE]
    > The `--recurse-submodules` flag clones the Qwen Code API [submodule](../../wiki/git.md#submodule) included in the repository.
 
-2. Open the forked repo in `VS Code` through `Remote-SSH`.
-
-3. Go to `VS Code Terminal`, [check that the current directory is `se-toolkit-lab-8`](../../wiki/shell.md#check-the-current-directory-is-directory-name), and install `Python` dependencies:
+3. Go into the repository and install `Python` dependencies:
 
    ```terminal
+   cd se-toolkit-lab-8
    uv sync --dev
    ```
 
