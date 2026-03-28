@@ -1,0 +1,30 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "./workspace",
+      "model": "qwen3-coder-plus",
+      "provider": "custom",
+      "maxTokens": 8192,
+      "contextWindowTokens": 65536,
+      "temperature": 0.1,
+      "maxToolIterations": 40,
+      "reasoningEffort": null,
+      "timezone": "UTC"
+    }
+  },
+  "providers": {
+    "custom": {
+      "apiKey": "my-secret-qwen-key",
+      "apiBase": "http://localhost:42005/v1",
+      "extraHeaders": null
+    }
+  },
+  "tools": {
+    "mcpServers": {
+      "lms": {
+        "command": "python",
+        "args": ["-m", "mcp_lms"]
+      }
+    }
+  }
+}
