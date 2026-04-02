@@ -88,10 +88,11 @@ def main() -> None:
 
     # Update providers.custom with LLM settings
     if settings.llm_api_key:
-        config.setdefault("providers", {}).setdefault("custom", {})["apiKey"] = (
-            settings.llm_api_key
-        )
-    if settings.llm_api_base_url:
+        config.setdefault("providers", {})["custom"] = {
+            "apiKey": settings.llm_api_key,
+            "apiBase": settings.llm_api_base_url or config.get("providers", {}).get("custom", {}).get("apiBase"),
+        }
+    if settings.llm_api_base_url and "custom" not in config.get("providers", {}):
         config.setdefault("providers", {}).setdefault("custom", {})[
             "apiBase"
         ] = settings.llm_api_base_url
