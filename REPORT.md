@@ -27,7 +27,7 @@ MCP server 'webchat': connected, 1 tools registered
 Agent loop started
 ```
 
-![Nanobot logs](report-images/nanobot-logs.png)
+![Nanobot logs](report-images/Снимок%20экрана%202026-04-02%20224300.png)
 
 **To verify on VM:**
 ```bash
@@ -46,7 +46,7 @@ docker compose --env-file .env.docker.secret ps
 - Login page accessible
 
 **Agent conversation:**
-![Flutter chat](report-images/flutter-chat.png)
+![Flutter chat](report-images/photo_2026-04-02_22-54-37.jpg)
 
 **WebSocket endpoint:**
 - Endpoint: `ws://localhost:42002/ws/chat?access_key=megakey1`
