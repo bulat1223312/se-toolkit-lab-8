@@ -4,28 +4,42 @@ description: Use LMS MCP tools for live course data
 always: true
 ---
 
-You have access to the following LMS tools via MCP:
-- `lms_health` – check backend health and item count
-- `lms_labs` – list all labs (id, title, description)
-- `lms_pass_rates` – get pass rates for a specific lab
-- `lms_scores` – get scores for a specific lab
-- `lms_submissions_timeline` – get submissions over time for a lab
-- `lms_groups_performance` – group performance for a lab
-- `lms_top_learners` – top learners for a lab
-- `lms_sync` – trigger ETL sync (rarely needed)
+# LMS Skill
 
-When a user asks for information that requires a lab (e.g., scores, pass rates, timeline, groups, top learners) **without specifying a lab**:
-1. Call `lms_labs` to retrieve available labs.
-2. Present the labs as a short list (e.g., "Available labs: lab-01 (Title 1), lab-02 (Title 2)…").
-3. Ask the user to choose one lab before proceeding.
+You have access to LMS MCP tools for querying live course data.
 
-When a lab is provided (or after the user chooses), call the appropriate tool with the lab identifier (e.g., `lab-01`). Use the numeric identifier from the tool output, not the title.
+## Available Tools
 
-Format numeric results nicely:
-- Percentages: one decimal place (e.g., 87.3%)
-- Counts: whole numbers (e.g., 45 submissions)
-- Dates: YYYY-MM-DD HH:MM
+- `lms_health` - Check if the LMS backend is healthy and report the item count
+- `lms_labs` - List all labs available in the LMS
+- `lms_learners` - List all learners registered in the LMS
+- `lms_pass_rates` - Get pass rates (avg score and attempt count per task) for a lab (requires `lab` parameter)
+- `lms_timeline` - Get submission timeline (date + submission count) for a lab (requires `lab` parameter)
+- `lms_groups` - Get group performance (avg score + student count per group) for a lab (requires `lab` parameter)
+- `lms_top_learners` - Get top learners by average score for a lab (requires `lab` parameter, optional `limit`)
+- `lms_completion_rate` - Get completion rate (passed / total) for a lab (requires `lab` parameter)
+- `lms_sync_pipeline` - Trigger the LMS sync pipeline
 
-Keep responses concise. If the user asks "what can you do?", explain that you can retrieve LMS data (labs, pass rates, scores, timeline, etc.) and that you need the lab name for detailed queries.
+## Strategy Rules
 
-**Important:** Do not assume any lab exists; always use `lms_labs` first when lab is needed.
+1. **When user asks about scores, pass rates, completion, groups, timeline, or top learners without naming a lab:**
+   - First call `lms_labs` to get available labs
+   - If multiple labs exist, ask the user to choose one
+   - Use each lab's `title` field as the user-facing label
+
+2. **When presenting lab choices:**
+   - Format as a numbered list with lab titles
+   - Let the shared structured-ui skill handle presentation on supported channels
+
+3. **When user asks "what can you do?":**
+   - Explain that you can query live LMS data including labs, learners, pass rates, timelines, group performance, and completion statistics
+   - Mention that you need a lab name for detailed queries
+
+4. **Formatting:**
+   - Format percentages with % symbol
+   - Format counts as plain numbers
+   - Keep responses concise and structured
+
+5. **Error handling:**
+   - If a tool fails, explain what went wrong and suggest alternatives
+   - If the backend is unavailable, suggest checking system health
