@@ -102,7 +102,7 @@ services:
     environment:
       # Task 1 used VM-shell URLs. In Docker, use service-to-service URLs instead.
       - LLM_API_KEY=${LLM_API_KEY:?'LLM_API_KEY is required'}
-      - LLM_API_BASE_URL=http://qwen-code-api:${QWEN_CODE_API_CONTAINER_PORT:?'QWEN_CODE_API_CONTAINER_PORT is required'}/v1
+      - LLM_API_BASE_URL=${LLM_API_BASE_URL:?"LLM_API_BASE_URL is required"}
       - LLM_API_MODEL=${LLM_API_MODEL:?'LLM_API_MODEL is required'}
       - NANOBOT_LMS_BACKEND_URL=http://backend:${BACKEND_CONTAINER_PORT:?'BACKEND_CONTAINER_PORT is required'}
       - NANOBOT_LMS_API_KEY=${LMS_API_KEY:?'LMS_API_KEY is required'}
@@ -111,6 +111,9 @@ services:
       - NANOBOT_WEBCHAT_CONTAINER_ADDRESS=${NANOBOT_WEBCHAT_CONTAINER_ADDRESS:?'NANOBOT_WEBCHAT_CONTAINER_ADDRESS is required'}
       - NANOBOT_WEBCHAT_CONTAINER_PORT=${NANOBOT_WEBCHAT_CONTAINER_PORT:?'NANOBOT_WEBCHAT_CONTAINER_PORT is required'}
       - NANOBOT_ACCESS_KEY=${NANOBOT_ACCESS_KEY:?'NANOBOT_ACCESS_KEY is required'}
+      # Task 3C — observability
+      - NANOBOT_VICTORIALOGS_URL=http://victorialogs:${CONST_VICTORIALOGS_CONTAINER_PORT:?'CONST_VICTORIALOGS_CONTAINER_PORT is required'}
+      - NANOBOT_VICTORIATRACES_URL=http://victoriatraces:${CONST_VICTORIATRACES_CONTAINER_PORT:?'CONST_VICTORIATRACES_CONTAINER_PORT is required'}
     depends_on:
       - backend
       - qwen-code-api
@@ -158,26 +161,17 @@ services:
 
   qwen-code-api:
     build:
-      context: ./qwen-code-api
-      args:
-        REGISTRY_PREFIX_DOCKER_HUB: ${REGISTRY_PREFIX_DOCKER_HUB:-}
+      context: ./stub-llm-api
     restart: unless-stopped
     networks:
       - lms-network
     ports:
       - ${QWEN_CODE_API_HOST_ADDRESS:?'QWEN_CODE_API_HOST_ADDRESS is required'}:${QWEN_CODE_API_HOST_PORT:?'QWEN_CODE_API_HOST_PORT is required'}:${QWEN_CODE_API_CONTAINER_PORT:-8080}
-    volumes:
-      - ~/.qwen:/home/nonroot/.qwen:ro
     environment:
       - PORT=${QWEN_CODE_API_CONTAINER_PORT:-8080}
       - ADDRESS=${QWEN_CODE_API_CONTAINER_ADDRESS:-0.0.0.0}
       - DEFAULT_MODEL=${QWEN_CODE_API_MODEL:?'QWEN_CODE_API_MODEL is required'}
       - LOG_LEVEL=${QWEN_CODE_API_LOG_LEVEL:?'QWEN_CODE_API_LOG_LEVEL is required'}
-      - MAX_RETRIES=${QWEN_CODE_API_MAX_RETRIES:?'QWEN_CODE_API_MAX_RETRIES is required'}
-      - RETRY_DELAY_MS=${QWEN_CODE_API_RETRY_DELAY_MS:?'QWEN_CODE_API_RETRY_DELAY_MS is required'}
-      - QWEN_CODE_AUTH_USE=${QWEN_CODE_API_AUTH_USE:?'QWEN_CODE_API_AUTH_USE is required'}
-      - LOG_REQUESTS=${QWEN_CODE_API_LOG_REQUESTS:?'QWEN_CODE_API_LOG_REQUESTS is required'}
-      - QWEN_CODE_API_KEY=${QWEN_CODE_API_KEY:-}
     healthcheck:
       test:
         - CMD
@@ -185,15 +179,11 @@ services:
         - "-c"
         - |
           import urllib.request
-          req = urllib.request.Request(
-              'http://localhost:${QWEN_CODE_API_CONTAINER_PORT:-8080}/health',
-              headers={'X-API-Key': '${QWEN_CODE_API_KEY:-}'}
-          )
-          urllib.request.urlopen(req)
+          urllib.request.urlopen('http://localhost:${QWEN_CODE_API_CONTAINER_PORT:-8080}/health')
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 10s
+      start_period: 5s
 
   # Optional Task 1 — uncomment after you add the Telegram client repo in Task 2.
   # client-telegram-bot:

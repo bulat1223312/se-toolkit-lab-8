@@ -8,6 +8,8 @@ dependencies = [
     # Task 2B
     "nanobot-webchat @ file:///app/nanobot-websocket-channel/nanobot-webchat",
     "mcp-webchat @ file:///app/nanobot-websocket-channel/mcp-webchat",
+    # Task 3C — observability
+    "mcp-obs @ file:///app/mcp/mcp_obs",
 ]
 
 [build-system]

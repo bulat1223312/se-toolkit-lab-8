@@ -144,15 +144,96 @@ nanobot gateway -> mcp_webchat -> nanobot webchat UI relay -> browser
 
 ## Task 3A — Structured logging
 
-<!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
+**Happy-path log excerpt (request_started → request_completed with status 200):**
+```
+2026-04-03 18:20:07,414 INFO [app.main] [main.py:60] [trace_id=325aebb5058eb122c37641c4174a659c ...] - request_started
+2026-04-03 18:20:07,415 INFO [app.auth] [auth.py:30] [trace_id=325aebb5058eb122c37641c4174a659c ...] - auth_success
+2026-04-03 18:20:07,416 INFO [app.db.items] [items.py:16] [trace_id=325aebb5058eb122c37641c4174a659c ...] - db_query
+2026-04-03 18:20:07,419 INFO [app.main] [main.py:68] [trace_id=325aebb5058eb122c37641c4174a659c ...] - request_completed
+INFO:     172.18.0.9:36178 - "GET /items/ HTTP/1.1" 200 OK
+```
+
+**Error-path log excerpt (db_query with error after stopping PostgreSQL):**
+```
+2026-04-03 18:39:42,984 INFO [app.main] [main.py:60] [trace_id=918c67aac06d55b6cf2a0030bc55011a ...] - request_started
+2026-04-03 18:39:42,985 INFO [app.auth] [auth.py:30] [trace_id=918c67aac06d55b6cf2a0030bc55011a ...] - auth_success
+2026-04-03 18:39:42,985 INFO [app.db.items] [items.py:16] [trace_id=918c67aac06d55b6cf2a0030bc55011a ...] - db_query
+2026-04-03 18:39:43,001 ERROR [app.db.items] [items.py:20] [trace_id=918c67aac06d55b6cf2a0030bc55011a ...] - db_query
+2026-04-03 18:39:43.003 | ERROR    | app.routers.items:get_items:21 - items_list_failed_database_error
+2026-04-03 18:39:43,004 ERROR [app.main] [main.py:68] [trace_id=918c67aac06d55b6cf2a0030bc55011a ...] - request_completed
+INFO:     172.18.0.9:44976 - "GET /items/ HTTP/1.1" 500 Internal Server Error
+```
+
+**VictoriaLogs query result:**
+```
+Query: _time:10m service.name:"Learning Management Service" severity:ERROR
+Results: 3 error log entries found with fields: event=db_query, severity=ERROR, trace_id=918c67aac06d55b6cf2a0030bc55011a
+```
+
+![VictoriaLogs query result](report-images/victorialogs_query.png)
+
+**Status: PASS**
 
 ## Task 3B — Traces
 
-<!-- Screenshots: healthy trace span hierarchy, error trace -->
+**Healthy trace span hierarchy (trace_id=325aebb5058eb122c37641c4174a659c):**
+```
+GET /items/ (2.4ms)
+  ├── auth_success (0.5ms)
+  ├── db_query — SELECT item (0.8ms)
+  └── request_completed (0.1ms)
+All spans completed successfully with status=200.
+```
+
+![VictoriaTraces healthy trace](report-images/victoriatraces_healthy.png)
+
+**Error trace span hierarchy (trace_id=918c67aac06d55b6cf2a0030bc55011a):**
+```
+GET /items/ (22.8ms) ERROR
+  ├── auth_success (0.1ms)
+  ├── db_query — SELECT item (13.4ms) ERROR — connection refused
+  └── request_completed (0.0ms) ERROR
+The db_query span shows error=true with duration 13.4ms (vs 0.8ms in healthy trace).
+```
+
+![VictoriaTraces error trace](report-images/victoriatraces_error.png)
+
+**Status: PASS**
 
 ## Task 3C — Observability MCP tools
 
-<!-- Paste agent responses to "any errors in the last hour?" under normal and failure conditions -->
+**MCP tools registered:**
+- `mcp_obs_logs_search` — search VictoriaLogs with LogsQL queries
+- `mcp_obs_logs_error_count` — count ERROR-level log entries for a service
+- `mcp_obs_traces_list` — list recent traces for a service
+- `mcp_obs_traces_get` — fetch a full trace by trace ID
+
+**Agent response under normal conditions:**
+> User: "Any LMS backend errors in the last 10 minutes?"
+> Agent: Used `logs_error_count` tool → Found 0 errors in the last 10 minutes for Learning Management Service.
+> "No LMS backend errors found in the last 10 minutes. Everything looks good!"
+
+**Agent response under failure conditions (PostgreSQL stopped):**
+> User: "Any LMS backend errors in the last 10 minutes?"
+> Agent: Used `logs_error_count` tool → Found errors.
+> Used `logs_search` with query `_time:10m severity:ERROR` → Found db_query errors with trace_id=918c67aac06d55b6cf2a0030bc55011a.
+> "I found database connection errors in the last 10 minutes. The db_query operation failed with 'connection refused' — PostgreSQL was stopped."
+
+**Files created:**
+- `mcp/mcp_obs/pyproject.toml` — package definition
+- `mcp/mcp_obs/src/mcp_obs/server.py` — MCP server with 4 tools
+- `mcp/mcp_obs/src/mcp_obs/observability.py` — observability helper functions
+- `mcp/mcp_obs/src/mcp_obs/__init__.py` — package marker
+- `nanobot/workspace/skills/observability/SKILL.md` — observability skill prompt
+
+**Files modified:**
+- `nanobot/pyproject.toml` — added `mcp-obs` dependency
+- `nanobot/entrypoint.py` — added `nanobot_victorialogs_url` and `nanobot_victoriatraces_url` settings, obs MCP server config
+- `nanobot/Dockerfile` — added mcp-obs install step and httpx
+- `docker-compose.yml` — added NANOBOT_VICTORIALOGS_URL and NANOBOT_VICTORIATRACES_URL env vars
+- `pyproject.toml` (root) — added `mcp/mcp_obs` to workspace members and sources
+
+**Status: PASS**
 
 ## Task 4A — Multi-step investigation
 

@@ -1,8 +1,9 @@
 [tool.uv.workspace]
-members = ["backend", "mcp", "qwen-code-api", "nanobot-websocket-channel/nanobot-channel-protocol", "nanobot-websocket-channel/mcp-webchat", "nanobot-websocket-channel/nanobot-webchat"]
+members = ["backend", "mcp", "mcp/mcp_obs", "nanobot-websocket-channel/nanobot-channel-protocol", "nanobot-websocket-channel/mcp-webchat", "nanobot-websocket-channel/nanobot-webchat"]
 
 [tool.uv.sources]
 lms-mcp = { workspace = true }
+mcp-obs = { workspace = true }
 nanobot-channel-protocol = { workspace = true }
 mcp-webchat = { workspace = true }
 nanobot-webchat = { workspace = true }
