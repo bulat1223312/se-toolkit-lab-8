@@ -5,7 +5,7 @@ requires-python = ">=3.11"
 dependencies = [
     "nanobot-ai>=0.1.0",
     "pydantic-settings>=2.0.0",
-    # Task 2B — uncomment after you add nanobot-websocket-channel.
+    # Task 2B
     "nanobot-webchat @ file:///app/nanobot-websocket-channel/nanobot-webchat",
     "mcp-webchat @ file:///app/nanobot-websocket-channel/mcp-webchat",
 ]
