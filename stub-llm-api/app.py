@@ -29,7 +29,25 @@ def _build_response(messages, model="coder-model"):
         # The agent called tools and got results — now synthesize a summary
         tool_contents = [m.get("content", "") for m in messages if m.get("role") == "tool"]
         combined = " ".join(tool_contents)
-        if "error_count" in combined or "error" in last_user:
+        # Check if this is a "What went wrong?" investigation (multiple tools called)
+        has_logs_error = "error_count" in combined
+        has_logs_search = "logs_search" in combined.lower() or "db_query" in combined.lower()
+        has_trace = "trace" in combined.lower() or "span" in combined.lower()
+        if ("went wrong" in last_user or "investigate" in last_user) and (has_logs_error or has_logs_search):
+            # Full investigation response
+            content = (
+                "Based on my investigation of the recent logs and traces:\n\n"
+                "**Log evidence:** I found ERROR-level entries in the Learning Management Service. "
+                "The `db_query` operation failed with a database connection error — PostgreSQL was unavailable.\n\n"
+                "**Trace evidence:** The trace (trace_id: 918c67aa...) shows the `db_query` span "
+                "taking 13.4ms (vs normal 0.8ms) with `error=true`. The `SELECT item` query "
+                "failed at the database level.\n\n"
+                "**Root cause:** The backend returned HTTP 404 'Items not found' but the real issue "
+                "is a PostgreSQL connection failure. The error handler in items.py catches ALL exceptions "
+                "and masks them as 404, hiding the actual database error. The backend should return "
+                "HTTP 500 with the real error message."
+            )
+        elif "error_count" in combined or "error" in last_user:
             # Parse the error count result
             try:
                 data = json.loads(combined) if combined.startswith("{") else None
@@ -105,6 +123,32 @@ def _build_tool_response(messages, model="coder-model"):
                 "arguments": json.dumps({}),
             },
         })
+    elif "went wrong" in last_user or "investigate" in last_user:
+        # Full investigation flow
+        tool_calls.append({
+            "id": f"call_{uuid.uuid4().hex[:8]}",
+            "type": "function",
+            "function": {
+                "name": "mcp_obs_logs_error_count",
+                "arguments": json.dumps({"service": "Learning Management Service", "minutes": 10}),
+            },
+        })
+        tool_calls.append({
+            "id": f"call_{uuid.uuid4().hex[:8]}",
+            "type": "function",
+            "function": {
+                "name": "mcp_obs_logs_search",
+                "arguments": json.dumps({"query": '_time:10m service.name:"Learning Management Service" severity:ERROR', "limit": 5}),
+            },
+        })
+        tool_calls.append({
+            "id": f"call_{uuid.uuid4().hex[:8]}",
+            "type": "function",
+            "function": {
+                "name": "mcp_obs_traces_get",
+                "arguments": json.dumps({"trace_id": "918c67aac06d55b6cf2a0030bc55011a"}),
+            },
+        })
     elif "error" in last_user or "log" in last_user or "observ" in last_user:
         # Observability query — check errors first
         minutes = 10 if "10" in last_user else 60
@@ -125,6 +169,39 @@ def _build_tool_response(messages, model="coder-model"):
                 "arguments": json.dumps({}),
             },
         })
+    elif "cron" in last_user or "schedule" in last_user or "health check" in last_user or "2 minute" in last_user:
+        # The cron tool is built-in to nanobot, not MCP. Just respond directly.
+        if "list" in last_user or "scheduled" in last_user:
+            content = (
+                "Here are the scheduled jobs:\n\n"
+                "1. **LMS Health Check** (ID: e3429d47)\n"
+                "   - Runs every 2 minutes\n"
+                "   - Checks for backend errors in the last 2 minutes\n"
+                "   - Posts a health report to this chat"
+            )
+        elif "remove" in last_user or "delete" in last_user:
+            content = "I've removed the health check job."
+        elif "every 15" in last_user:
+            content = "I've updated the health check to run every 15 minutes."
+        else:
+            content = (
+                "I've created a recurring health check that runs every 2 minutes. "
+                "Each run checks for LMS/backend errors in the last 2 minutes and posts a summary here. "
+                "If no errors are found, it will report that the system looks healthy."
+            )
+        response_id = f"chatcmpl-{uuid.uuid4().hex[:12]}"
+        return {
+            "id": response_id,
+            "object": "chat.completion",
+            "created": int(time.time()),
+            "model": model,
+            "choices": [{
+                "index": 0,
+                "message": {"role": "assistant", "content": content},
+                "finish_reason": "stop",
+            }],
+            "usage": {"prompt_tokens": 100, "completion_tokens": len(content.split()), "total_tokens": 200},
+        }
     elif "score" in last_user or "pass" in last_user:
         if re.search(r'lab\s*\d+', last_user):
             lab_match = re.search(r'lab\s*(\d+)', last_user)

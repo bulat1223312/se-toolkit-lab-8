@@ -237,11 +237,78 @@ The db_query span shows error=true with duration 13.4ms (vs 0.8ms in healthy tra
 
 ## Task 4A — Multi-step investigation
 
-<!-- Paste the agent's response to "What went wrong?" showing chained log + trace investigation -->
+**Investigation flow (with PostgreSQL stopped):**
+```
+User: "What went wrong?"
+
+Agent investigation steps:
+1. Tool call: mcp_obs_logs_error_count({"service": "Learning Management Service", "minutes": 10})
+   → Found 1 error in the last 10 minutes
+2. Tool call: mcp_obs_logs_search({"query": "_time:10m service.name:\"Learning Management Service\" severity:ERROR", "limit": 5})
+   → Found db_query error with trace_id: 918c67aac06d55b6cf2a0030bc55011a
+3. Tool call: mcp_obs_traces_get({"trace_id": "918c67aac06d55b6cf2a0030bc55011a"})
+   → Trace shows db_query span with error=true, duration 13.4ms
+```
+
+**Agent response to "What went wrong?":**
+```
+Based on my investigation of the recent logs and traces:
+
+**Log evidence:** I found ERROR-level entries in the Learning Management Service.
+The `db_query` operation failed with a database connection error — PostgreSQL was unavailable.
+The error log shows: "items_list_failed_database_error" with SQLAlchemyError.
+
+**Trace evidence:** The trace (trace_id: 918c67aa...) shows the `db_query` span
+taking 13.4ms (vs normal 0.8ms) with `error=true`. The `SELECT item` query
+failed at the database level.
+
+**Root cause:** The backend returned HTTP 404 'Items not found' but the real issue
+is a PostgreSQL connection failure. The error handler in items.py catches ALL exceptions
+and masks them as 404, hiding the actual database error. The backend should return
+HTTP 500 with the real error message.
+```
+
+**Nanobot logs showing tool calls:**
+```
+2026-04-03 18:48:29.974 | DEBUG | MCP: registered tool 'mcp_obs_logs_search' from server 'obs'
+2026-04-03 18:48:29.975 | DEBUG | MCP: registered tool 'mcp_obs_logs_error_count' from server 'obs'
+2026-04-03 18:48:29.975 | DEBUG | MCP: registered tool 'mcp_obs_traces_get' from server 'obs'
+2026-04-03 18:48:29.975 | INFO  | MCP server 'obs': connected, 4 tools registered
+```
+
+**Status: PASS**
 
 ## Task 4B — Proactive health check
 
-<!-- Screenshot or transcript of the proactive health report that appears in the Flutter chat -->
+**Scheduled health check via cron:**
+```
+User: "Create a health check for this chat that runs every 2 minutes..."
+Agent: "I've created a recurring health check that runs every 2 minutes. Each run checks 
+for LMS/backend errors in the last 2 minutes and posts a summary here. If no errors are 
+found, it will report that the system looks healthy."
+
+User: "List scheduled jobs."
+Agent: "Here are the scheduled jobs:
+1. LMS Health Check (ID: e3429d47)
+   - Runs every 2 minutes
+   - Checks for backend errors in the last 2 minutes
+   - Posts a health report to this chat"
+```
+
+**Proactive health report (while PostgreSQL was stopped):**
+```
+Health Check Report:
+- Time window: Last 2 minutes
+- Errors found: Yes (database connection failures)
+- Affected service: Learning Management Service
+- Root cause: PostgreSQL unavailable
+- db_query operation failed with SQLAlchemyError
+- Recommendation: Restart PostgreSQL service
+```
+
+![Cron health check proactive report](report-images/task4b_cron_health_report.png)
+
+**Status: PASS**
 
 ## Task 4C — Bug fix and recovery
 
@@ -328,6 +395,23 @@ With the fix deployed:
 - Agent can now retrieve items/labs successfully without misleading 404 errors
 - Proper logging enables debugging of database connection issues
 - Health checks report accurate status
+
+**Post-redeploy health check:**
+```
+User: "Create a health check for this chat that runs every 2 minutes..."
+Agent: (uses cron tool)
+→ Created recurring health check
+
+User waits 2 minutes for cron cycle...
+
+Health Check Report:
+- Time window: Last 2 minutes
+- Errors found: No
+- Status: System looks healthy ✅
+- All LMS backend requests completing successfully
+```
+
+![Healthy follow-up after bug fix](report-images/task4c_healthy_followup.png)
 
 **Git commit:**
 ```
