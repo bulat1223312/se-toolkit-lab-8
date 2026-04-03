@@ -26,6 +26,11 @@ RUN uv pip install --system nanobot-ai pydantic-settings websockets httpx
 # Copy nanobot app (from local context)
 COPY . ./nanobot/
 
+# Verify installations
+RUN python -c "import mcp_obs.server; print('mcp-obs installed')"
+RUN python -c "import mcp_webchat; print('mcp-webchat installed')"
+RUN python -c "import nanobot_webchat; print('nanobot-webchat installed')"
+
 CMD ["python", "/app/nanobot/entrypoint.py"]
 
 
