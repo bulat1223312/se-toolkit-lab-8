@@ -17,10 +17,17 @@ async def get_items(session: AsyncSession = Depends(get_session)):
     """Get all items."""
     try:
         return await read_items(session)
-    except Exception as exc:
+    except SQLAlchemyError as exc:
+        logger.error("items_list_failed_database_error", extra={"error": str(exc)})
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Items not found",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error: {str(exc)}",
+        ) from exc
+    except Exception as exc:
+        logger.exception("items_list_failed_unexpected_error", extra={"error": str(exc)})
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal server error: {str(exc)}",
         ) from exc
 
 

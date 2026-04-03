@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     nanobot_access_key: str | None = None
     nanobot_lms_backend_url: str | None = None
     nanobot_lms_api_key: str | None = None
+    # Task 3 — observability
+    nanobot_victorialogs_url: str | None = None
+    nanobot_victoriatraces_url: str | None = None
     class Config:
         env_prefix = ""
         extra = "ignore"
@@ -22,12 +25,12 @@ def install_packages():
     mcp_path = Path("/app/mcp")
     webchat_path = Path("/app/nanobot-websocket-channel")
     if mcp_path.exists():
-        subprocess.run([sys.executable, "-m", "pip", "install", "-e", str(mcp_path)], check=True)
+        subprocess.run([sys.executable, "-m", "pip", "install", str(mcp_path)], check=True)
     if webchat_path.exists():
         for pkg in ["nanobot-channel-protocol", "mcp-webchat", "nanobot-webchat"]:
             p = webchat_path / pkg
             if p.exists():
-                subprocess.run([sys.executable, "-m", "pip", "install", "-e", str(p), "--ignore-requires-python"], check=True)
+                subprocess.run([sys.executable, "-m", "pip", "install", str(p)], check=True)
 
 def main():
     install_packages()
@@ -67,6 +70,16 @@ def main():
             lms_env["NANOBOT_LMS_BACKEND_URL"] = settings.nanobot_lms_backend_url
         if settings.nanobot_lms_api_key:
             lms_env["NANOBOT_LMS_API_KEY"] = settings.nanobot_lms_api_key
+    # Task 3 — observability MCP server
+    if settings.nanobot_victorialogs_url or settings.nanobot_victoriatraces_url:
+        obs_config = mcp_servers.setdefault("obs", {})
+        obs_config["command"] = "python"
+        obs_config["args"] = ["-m", "mcp_obs.server"]
+        obs_env = obs_config.setdefault("env", {})
+        if settings.nanobot_victorialogs_url:
+            obs_env["VICTORIALOGS_URL"] = settings.nanobot_victorialogs_url
+        if settings.nanobot_victoriatraces_url:
+            obs_env["VICTORIATRACES_URL"] = settings.nanobot_victoriatraces_url
     with open(resolved_file, "w") as f:
         json.dump(config, f, indent=2)
     print(f"Using config: {resolved_file}")
@@ -75,3 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
