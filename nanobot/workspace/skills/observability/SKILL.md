@@ -63,3 +63,8 @@ When the user asks **"What went wrong?"**, **"Check system health"**, or **"Inve
 - If you find a trace ID, mention it and describe the failure path
 - Never output raw JSON unless the user explicitly asks
 - For "What went wrong?" specifically, cite BOTH log evidence AND trace evidence
+
+## Time window recommendations
+- Use `_time:10m` for recent errors (last 10 minutes)
+- Use `_time:1h` for broader investigation
+- Use `_time:5m` for very recent failures
