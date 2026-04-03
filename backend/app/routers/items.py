@@ -1,7 +1,8 @@
 """Router for item endpoints — reference implementation."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.exc import IntegrityError
+from loguru import logger
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.database import get_session

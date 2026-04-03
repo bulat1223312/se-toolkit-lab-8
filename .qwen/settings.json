@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(c:\\users\\user\\appdata\\local\\programs\\python\\python312\\python.exe *)",
+      "Bash(ssh *)",
+      "Bash(python *)",
+      "Bash(sshpass *)",
+      "Bash(plink *)"
+    ]
+  },
+  "$version": 3
+}

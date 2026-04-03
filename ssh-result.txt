@@ -1,0 +1,16 @@
+=== SSH Test to VM ===
+
+1. Checking pyproject.toml...
+STDOUT: EMPTY
+Return code: 255
+
+2. Checking services...
+STDOUT: EMPTY
+
+3. Checking MCP logs...
+MCP count: EMPTY
+
+4. Checking Flutter...
+Flutter Nanobot count: EMPTY
+
+=== DONE ===
