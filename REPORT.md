@@ -11,20 +11,20 @@
 - ✅ Environment variables configured for LLM API access
 
 **Nanobot startup logs (latest):**
-```
 Using config: /app/nanobot/config.resolved.json
 🐈 Starting nanobot gateway version 0.1.4.post6 on port 18790...
-2026-04-03 11:44:06.077 | INFO | nanobot.channels.manager:_init_channels:58 - WebChat channel enabled    
+2026-04-03 11:44:06.077 | INFO | nanobot.channels.manager:_init_channels:58 - WebChat channel enabled
 ✓ Channels enabled: webchat
 ✓ Heartbeat: every 1800s
-2026-04-03 11:44:06.553 | INFO | nanobot.channels.manager:start_all:91 - Starting webchat channel...     
+2026-04-03 11:44:06.553 | INFO | nanobot.channels.manager:start_all:91 - Starting webchat channel...
 2026-04-03 11:44:06.554 | INFO | nanobot.channels.manager:_dispatch_outbound:119 - Outbound dispatcher started
 2026-04-03 11:44:07.466 | DEBUG | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_lms_lms_health' from server 'lms'
 2026-04-03 11:44:07.466 | INFO | nanobot.agent.tools.mcp:connect_mcp_servers:246 - MCP server 'lms': connected, 9 tools registered
 2026-04-03 11:44:08.362 | DEBUG | nanobot.agent.tools.mcp:connect_mcp_servers:226 - MCP: registered tool 'mcp_webchat_ui_message' from server 'webchat'
 2026-04-03 11:44:08.363 | INFO | nanobot.agent.tools.mcp:connect_mcp_servers:246 - MCP server 'webchat': connected, 1 tools registered
 2026-04-03 11:44:08.363 | INFO | nanobot.agent.loop:run:280 - Agent loop started
-```
+
+text
 
 **Service status:**
 - nanobot: Up and running on port 18790
@@ -51,7 +51,7 @@ Using config: /app/nanobot/config.resolved.json
 - `nanobot/entrypoint.py` - Fixed to properly override config values from environment
 - `nanobot/config.json` - Updated to use environment variable placeholders
 - `nanobot/pyproject.toml` - Added nanobot-webchat and mcp-webchat dependencies
-- `nanobot-websocket-channel/nanobot-channel-protocol/pyproject.toml` - Fixed Python version requirement 
+- `nanobot-websocket-channel/nanobot-channel-protocol/pyproject.toml` - Fixed Python version requirement
 - `nanobot-websocket-channel/mcp-webchat/pyproject.toml` - Removed tool.uv.sources
 - `nanobot-websocket-channel/nanobot-webchat/pyproject.toml` - Removed tool.uv.sources
 - `docker-compose.yml` - Enabled nanobot service
@@ -86,12 +86,11 @@ Using config: /app/nanobot/config.resolved.json
 - MCP server 'webchat': connected, 1 tool registered (`mcp_webchat_ui_message`)
 
 **Startup log excerpts:**
-```
 Caddy:
- Serving Flutter web client at /flutter
- Proxying WebSocket connections to nanobot webchat channel on port 8765
- Route /ws/chat -> ws://nanobot:8765/ws/chat
- Route /flutter* -> /flutter (static files)
+Serving Flutter web client at /flutter
+Proxying WebSocket connections to nanobot webchat channel on port 8765
+Route /ws/chat -> ws://nanobot:8765/ws/chat
+Route /flutter* -> /flutter (static files)
 
 Nanobot webchat channel:
 2026-04-03 11:44:06.553 | INFO | Starting webchat channel on port 8765
@@ -105,7 +104,8 @@ Full stack verification:
 ✓ Messages relayed through Caddy -> nanobot webchat channel -> nanobot gateway
 ✓ Agent processes messages using Qwen LLM and MCP tools
 ✓ Responses returned through WebSocket to Flutter UI
-```
+
+text
 
 **Agent conversation:**
 ![Flutter chat with nanobot](report-images/photo_2026-04-02_22-54-37.jpg)
@@ -127,11 +127,11 @@ The screenshot above shows a successful conversation with the nanobot agent thro
 - `nanobot/entrypoint.py` - Added webchat channel and MCP server configuration
 
 **Architecture:**
-```
 browser -> caddy (port 42002) -> nanobot webchat channel (port 8765) -> nanobot gateway -> mcp_lms -> backend
 nanobot gateway -> qwen-code-api -> Qwen
 nanobot gateway -> mcp_webchat -> nanobot webchat UI relay -> browser
-```
+
+text
 
 **Checkpoint evidence:**
 - Flutter web client accessible at http://10.93.25.49:42002/flutter
@@ -182,11 +182,8 @@ async def get_items(session: AsyncSession = Depends(get_session)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Items not found",
         ) from exc
-```
-
-### 2. Code fix applied
-
-```python
+2. Code fix applied
+python
 @router.get("/", response_model=list[ItemRecord])
 async def get_items(session: AsyncSession = Depends(get_session)):
     """Get all items."""
@@ -204,25 +201,32 @@ async def get_items(session: AsyncSession = Depends(get_session)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal server error: {str(exc)}",
         ) from exc
-```
+Key changes:
 
-**Key changes:**
-1. Catch `SQLAlchemyError` specifically for database failures
-2. Return HTTP 500 (Internal Server Error) instead of 404 for database errors
-3. Include the actual error message in the response for debugging
-4. Log the real error using loguru logger for debugging
-5. Separate handler for unexpected exceptions with `logger.exception`
+Catch SQLAlchemyError specifically for database failures
 
-### 3. Post-fix verification
+Return HTTP 500 (Internal Server Error) instead of 404 for database errors
 
+Include the actual error message in the response for debugging
+
+Log the real error using loguru logger for debugging
+
+Separate handler for unexpected exceptions with logger.exception
+
+3. Post-fix verification
 After rebuilding and redeploying:
-1. Backend rebuilt: `docker compose build backend`
-2. Services restarted: `docker compose up -d backend`
-3. PostgreSQL running: healthy
-4. Backend status: Up and running on `127.0.0.1:42001->8000/tcp`
 
-**Deployment log excerpts:**
-```
+Backend rebuilt: docker compose build backend
+
+Services restarted: docker compose up -d backend
+
+PostgreSQL running: healthy
+
+Backend status: Up and running on 127.0.0.1:42001->8000/tcp
+
+Deployment log excerpts:
+
+text
 === Rebuild backend ===
 Image se-toolkit-lab-8-backend Building
 Image se-toolkit-lab-8-backend Built
@@ -238,18 +242,20 @@ Container se-toolkit-lab-8-backend-1 Started
 === Service status ===
 NAME                         IMAGE                      SERVICE   STATUS
 se-toolkit-lab-8-backend-1   se-toolkit-lab-8-backend   backend   Up Less than a second
-```
-
-### 4. Healthy follow-up
-
+4. Healthy follow-up
 With the fix deployed:
-- Database errors are now properly reported as HTTP 500 with actual error details
-- Agent can now retrieve items/labs successfully without misleading 404 errors
-- Proper logging enables debugging of database connection issues
-- Health checks report accurate status
 
-**Git commit:**
-```
+Database errors are now properly reported as HTTP 500 with actual error details
+
+Agent can now retrieve items/labs successfully without misleading 404 errors
+
+Proper logging enables debugging of database connection issues
+
+Health checks report accurate status
+
+Git commit:
+
+text
 Fix items.py: catch SQLAlchemyError separately, return 500 instead of 404
 
 The get_items() function had a broad except Exception block that caught ALL
@@ -262,6 +268,4 @@ Key changes:
 3. Include the actual error message in the response
 4. Log the real error for debugging with loguru logger
 5. Separate handler for unexpected exceptions with logger.exception
-```
-
-**Status: PASS**
+Status: PASS
