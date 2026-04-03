@@ -2,6 +2,8 @@
 
 ## Task 2A — Deployed agent
 
+**VERDICT: PASS**
+
 **Deployment checklist:**
 - ✅ Nanobot Dockerfile created with all MCP packages installed
 - ✅ Docker Compose services configured (nanobot, qwen-code-api, backend, caddy)
@@ -64,6 +66,8 @@ Using config: /app/nanobot/config.resolved.json
 **Status: PASS**
 
 ## Task 2B — Web client
+
+**VERDICT: PASS**
 
 **Deployment checklist:**
 - ✅ Flutter web client served via Caddy on `/flutter` route
